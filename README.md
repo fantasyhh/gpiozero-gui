@@ -22,10 +22,6 @@ and you can use **PyInstaller freezes (packages) Python applications into stand-
 - Input device
 - SPI device
 
-
-[![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2Fgjbae1212%2Fhit-counter)](https://hits.seeyoufarm.com)                            
-
-
 <p align="center"> 
   Visitor count<br>
   <img src="https://profile-counter.glitch.me/fantasyhh/count.svg"/>
