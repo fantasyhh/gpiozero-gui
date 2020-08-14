@@ -45,9 +45,9 @@ while True:  # Event Loop
     if event == '-connect-':
         # when click to connect
         if not is_connected:
-            is_connected = not is_connected
             result = check_pigpio_service(values['-host-'], values['-port-'])
             if result:
+                is_connected = not is_connected
                 sg.popup_no_titlebar('Connect success!', auto_close=True, background_color='red')
                 window['-connect-'].update(text='disconnect')
                 window['-status-'].update(image_data=icon_status_on)
