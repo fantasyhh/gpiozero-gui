@@ -6,8 +6,11 @@ pins = ['GPIO{}'.format(i) for i in range(2, 28)]
 
 class SgButton(sg.Button):
     def __init__(self, **kwargs):
-        super().__init__(button_color=(sg.theme_background_color(), sg.theme_background_color()),
-                         border_width=0, **kwargs)
+        if 'button_color' in kwargs:
+            super().__init__(border_width=0, **kwargs)
+        else:
+            super().__init__(button_color=(sg.theme_background_color(), sg.theme_background_color()), border_width=0,
+                             **kwargs)
 
 
 class SgCombo(sg.Combo):
@@ -115,5 +118,21 @@ def phaseenablemotor_layout():
                  key='-speed-')],
         [SgButton(image_data=icon_open,
                   tooltip='Open/Close the device ', key='-open-')]
+    ]
+    return layout
+
+
+def button_layout():
+    pull_up_list = [True, False]
+    layout = [
+        [SgCombo(pins, default_value='Select pin',
+                 tooltip='The GPIO pin that the phase (direction) input of the motor driver chip is connected to',
+                 key='-pin-')],
+        [SgCombo(pull_up_list, default_value='Select pull up',
+                 tooltip="If True (the default), the GPIO pin will be pulled high,If False, be pulled low ",
+                 key='-pull_up-')],
+        [SgButton(image_data=icon_open, tooltip='Open/Close the device ', key='-open-'),
+         SgButton(button_text='Test', button_color=None, tooltip='test pressed and released', key='-press-')
+         ]
     ]
     return layout

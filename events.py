@@ -1,5 +1,6 @@
 import socket
-from gpiozero import DigitalOutputDevice, PhaseEnableMotor, PWMOutputDevice, pi_info, Device, Servo, AngularServo,LineSensor
+from gpiozero import DigitalOutputDevice, PhaseEnableMotor, PWMOutputDevice, pi_info, Device, Servo, AngularServo, \
+    Button
 from gpiozero.pins.pigpio import PiGPIOFactory
 from devices import *
 from device_layout import *
@@ -195,11 +196,13 @@ def run(window, device, host, port):
                     d.value = speed
             if event == '-open-':
                 if not device_open:
-                    if values['-direction_pin-'] == 'Select direction pin' or values['-speed_pin-'] == 'Select speed pin':
+                    select = 'Select direction pin'
+                    if values['-direction_pin-'] == select or values['-speed_pin-'] == select:
                         sg.popup_no_titlebar("Select your pin!")
                         continue
                     else:
-                        d = PhaseEnableMotor(phase=values['-direction_pin-'],enable=values['-speed_pin-'],pin_factory=factory)
+                        d = PhaseEnableMotor(phase=values['-direction_pin-'], enable=values['-speed_pin-'],
+                                             pin_factory=factory)
                         d.value = 0
                         device_open = True
                         run_window['-open-'].update(image_data=icon_close)
@@ -208,3 +211,40 @@ def run(window, device, host, port):
                     d.close()
                     run_window['-open-'].update(image_data=icon_open)
 
+    elif device == N_Button:
+        run_window.Layout(button_layout())
+        device_open = False
+        while True:
+            event, values = run_window.read()
+            if event in (sg.WIN_CLOSED, 'Exit'):
+                break
+            # if not exit-event, get param
+            if event == '-pin-':
+                if device_open:
+                    sg.popup_no_titlebar("Close device first!")
+            if event == '-pull_up-':
+                if device_open:
+                    sg.popup_no_titlebar('pull-up param only work before open!')
+            if event == '-press-':
+                if device_open:
+                    sg.popup_no_titlebar('Now you can test button!')
+                    d.wait_for_press()
+                    sg.popup_no_titlebar('Yuu pressed button!')
+                    d.wait_for_release()
+                    sg.popup_no_titlebar('Yuu released button!')
+                else:
+                    sg.popup_no_titlebar("Open device first!")
+            if event == '-open-':
+                if not device_open:
+                    if values['-pin-'] == 'Select pin':
+                        sg.popup_no_titlebar("Select your pin!")
+                        continue
+                    else:
+                        pull_up = True if str(values['-pull_up-']).startswith('Select') else values['-pull_up-']
+                        d = Button(values['-pin-'], pull_up=pull_up, bounce_time=0.1, pin_factory=factory)
+                        device_open = True
+                        run_window['-open-'].update(image_data=icon_close)
+                else:
+                    device_open = False
+                    d.close()
+                    run_window['-open-'].update(image_data=icon_open)

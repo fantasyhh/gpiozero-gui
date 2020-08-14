@@ -7,9 +7,10 @@ N_PWMLED = 'PWMLED'
 N_Servo = 'Servo'
 N_AngularServo = 'AngularServo'
 N_PhaseEnableMotor = 'PhaseEnableMotor'
+N_Button = 'Button'
 
 Devices = [N_DigitalOutputDevice, N_LED, N_Buzzer, N_PWMOutputDevice, N_PWMLED, N_Servo, N_AngularServo,
-           N_PhaseEnableMotor]
+           N_PhaseEnableMotor,N_Button]
 
 # device description
 D_DigitalOutputDevice = "Represents a generic output device with typical on/off behaviour"
@@ -40,3 +41,7 @@ D_AngularServo = "Extends Servo and represents a rotational PWM-controlled servo
 D_PhaseEnableMotor = "Represents a generic motor connected to a Phase/Enable" \
                      " motor driver circuit; the phase of the driver controls whether the motor turns forwards"\
                      "or backwards, while enable controls the speed with PWM."
+D_Button = "Represents a simple push button or switch.\n" \
+           "Connect one side of the button to a ground pin, " \
+           "and the other to any GPIO pin. Alternatively, connect one side of the button to the 3V3 pin, " \
+           "and the other to any GPIO pin, then set pull_up to False in the Button constructor"
