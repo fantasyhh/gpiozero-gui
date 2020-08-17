@@ -8,9 +8,12 @@ N_Servo = 'Servo'
 N_AngularServo = 'AngularServo'
 N_PhaseEnableMotor = 'PhaseEnableMotor'
 N_Button = 'Button'
+N_LineSensor = 'LineSensor'
+N_MotionSensor = 'MotionSensor'
+N_LightSensor = 'LightSensor'
 
 Devices = [N_DigitalOutputDevice, N_LED, N_Buzzer, N_PWMOutputDevice, N_PWMLED, N_Servo, N_AngularServo,
-           N_PhaseEnableMotor,N_Button]
+           N_PhaseEnableMotor, N_Button, N_LineSensor, N_MotionSensor, N_LightSensor]
 
 # device description
 D_DigitalOutputDevice = "Represents a generic output device with typical on/off behaviour"
@@ -39,9 +42,22 @@ D_AngularServo = "Extends Servo and represents a rotational PWM-controlled servo
                  "connect the final cable (typically colored white or orange) to " \
                  "the GPIO pin you wish to use for controlling the servo."
 D_PhaseEnableMotor = "Represents a generic motor connected to a Phase/Enable" \
-                     " motor driver circuit; the phase of the driver controls whether the motor turns forwards"\
+                     " motor driver circuit; the phase of the driver controls whether the motor turns forwards" \
                      "or backwards, while enable controls the speed with PWM."
 D_Button = "Represents a simple push button or switch.\n" \
            "Connect one side of the button to a ground pin, " \
            "and the other to any GPIO pin. Alternatively, connect one side of the button to the 3V3 pin, " \
            "and the other to any GPIO pin, then set pull_up to False in the Button constructor"
+D_LineSensor = "Represents a single pin line sensor like the TCRT5000 infra-red proximity sensor\n" \
+               "A typical line sensor has a small circuit board with three pins: VCC, GND, and OUT. " \
+               "VCC should be connected to a 3V3 pin, GND to one of the ground pins, " \
+               "and finally OUT to the GPIO specified as the value of the pin parameter in the constructor."
+D_MotionSensor = "Represents a passive infra-red (PIR) motion sensor\n" \
+                 "A typical PIR device has a small circuit board with three pins: VCC, OUT, and GND. " \
+                 "VCC should be connected to a 5V pin, GND to one of the ground pins, " \
+                 "and finally OUT to the GPIO specified as the value of the pin parameter in the constructor."
+D_LightSensor = "Represents a light dependent resistor (LDR).\n" \
+                "Connect one leg of the LDR to the 3V3 pin; connect one leg of a 1µF capacitor to a ground pin; " \
+                "connect the other leg of the LDR and the other leg of the capacitor to the same GPIO pin. " \
+                "This class repeatedly discharges the capacitor, " \
+                "then times the duration it takes to charge (which will vary according to the light falling on the LDR)"

@@ -132,7 +132,19 @@ def button_layout():
                  tooltip="If True (the default), the GPIO pin will be pulled high,If False, be pulled low ",
                  key='-pull_up-')],
         [SgButton(image_data=icon_open, tooltip='Open/Close the device ', key='-open-'),
-         SgButton(button_text='Test', button_color=None, tooltip='test pressed and released', key='-press-')
+         SgButton(button_text='Test', button_color=None, tooltip='test pressed and released', key='-test-')
+         ]
+    ]
+    return layout
+
+
+def linesensor_layout():
+    layout = [
+        [SgCombo(pins, default_value='Select pin',
+                 tooltip='The GPIO pin that the phase (direction) input of the motor driver chip is connected to',
+                 key='-pin-')],
+        [SgButton(image_data=icon_open, tooltip='Open/Close the device ', key='-open-'),
+         SgButton(button_text='Test', button_color=None, tooltip='test device state changes', key='-test-')
          ]
     ]
     return layout

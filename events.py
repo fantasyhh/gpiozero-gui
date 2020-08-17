@@ -1,6 +1,6 @@
 import socket
 from gpiozero import DigitalOutputDevice, PhaseEnableMotor, PWMOutputDevice, pi_info, Device, Servo, AngularServo, \
-    Button
+    Button, LineSensor, MotionSensor, LightSensor
 from gpiozero.pins.pigpio import PiGPIOFactory
 from devices import *
 from device_layout import *
@@ -225,7 +225,7 @@ def run(window, device, host, port):
             if event == '-pull_up-':
                 if device_open:
                     sg.popup_no_titlebar('pull-up param only work before open!')
-            if event == '-press-':
+            if event == '-test-':
                 if device_open:
                     sg.popup_no_titlebar('Now you can test button!')
                     d.wait_for_press()
@@ -242,6 +242,39 @@ def run(window, device, host, port):
                     else:
                         pull_up = True if str(values['-pull_up-']).startswith('Select') else values['-pull_up-']
                         d = Button(values['-pin-'], pull_up=pull_up, bounce_time=0.1, pin_factory=factory)
+                        device_open = True
+                        run_window['-open-'].update(image_data=icon_close)
+                else:
+                    device_open = False
+                    d.close()
+                    run_window['-open-'].update(image_data=icon_open)
+
+    elif device in (N_LineSensor, N_MotionSensor, N_LightSensor):
+        run_window.Layout(linesensor_layout())
+        device_open = False
+        while True:
+            event, values = run_window.read()
+            if event in (sg.WIN_CLOSED, 'Exit'):
+                break
+            if event == '-pin-':
+                if device_open:
+                    sg.popup_no_titlebar("Close device first!")
+            if event == '-test-':
+                if device_open:
+                    sg.popup_no_titlebar('Now you can test sensor!')
+                    d.wait_for_active()
+                    sg.popup_no_titlebar('device now is active!')
+                    d.wait_for_inactive()
+                    sg.popup_no_titlebar('device now is inactive, Test over!')
+                else:
+                    sg.popup_no_titlebar("Open device first!")
+            if event == '-open-':
+                if not device_open:
+                    if values['-pin-'] == 'Select pin':
+                        sg.popup_no_titlebar("Select your pin!")
+                        continue
+                    else:
+                        d = eval(device)(pin=values['-pin-'], pin_factory=factory)
                         device_open = True
                         run_window['-open-'].update(image_data=icon_close)
                 else:
